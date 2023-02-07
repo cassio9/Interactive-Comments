@@ -1,18 +1,21 @@
 import ReplyIcon from "../assets/images/icon-reply.svg";
 import Minus from "../assets/images/icon-minus.svg";
 import Plus from "../assets/images/icon-plus.svg";
-import Reply, { Replying } from "./Reply";
 import SendMessages from "./SendMessages";
 import { useState } from "react";
-import { Comments } from "../App";
 
-interface Props extends Comments {
+export interface Replying {
+	id: number;
+	content: string;
+	createdAt: string;
+	replyingTo: string;
+	score: number;
 	setMessagesData: React.Dispatch<any>;
+	user: { image: { png: string; webp: string }; username: string };
 }
 
-const Messages = ({ content, id, createdAt, replies, score, user, setMessagesData }: Props) => {
+const Reply = ({ id, content, createdAt, replyingTo, score, setMessagesData, user }: Replying) => {
 	const [openReply, setOpenReply] = useState(false);
-
 	return (
 		<div>
 			<div className="flex flex-col bg-white p-4 pb-2 rounded-lg mb-4">
@@ -21,7 +24,10 @@ const Messages = ({ content, id, createdAt, replies, score, user, setMessagesDat
 					<p className="text-DarkBlue font-bold">{user.username}</p>
 					<p className="text-GrayishBlue">{createdAt}</p>
 				</div>
-				<p className="text-GrayishBlue py-2">{content}</p>
+				<p className="text-GrayishBlue py-2">
+					<span className="text-ModerateBlue font-bold cursor-pointer">@{replyingTo} </span>
+					{content}
+				</p>
 				<div className="flex justify-between items-center py-4">
 					<div className="flex gap-4 bg-LightGray py-2  px-4 rounded-lg ">
 						<button className="text-xl text-LightGrayishBlue">
@@ -40,19 +46,9 @@ const Messages = ({ content, id, createdAt, replies, score, user, setMessagesDat
 					</button>
 				</div>
 			</div>
-			<div className="pl-5 ml-auto border-l-LightGrayishBlue border-y-0 border-[1px]">
-				{openReply && (
-					<div className="mb-4">
-						<SendMessages setMessagesData={setMessagesData} id={id} setOpenReply={setOpenReply} />
-					</div>
-				)}
-				{replies &&
-					replies.map((reply: Replying) => {
-						return <Reply key={reply.id} {...reply} />;
-					})}
-			</div>
+			{openReply && <div className="my-4"></div>}
 		</div>
 	);
 };
 
-export default Messages;
+export default Reply;
