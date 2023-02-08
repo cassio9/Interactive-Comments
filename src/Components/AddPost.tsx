@@ -32,6 +32,7 @@ const AddPost = ({ setMessagesData }: Props) => {
 				],
 			};
 		});
+		setNewPost("");
 	};
 
 	return (

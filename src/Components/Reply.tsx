@@ -4,7 +4,7 @@ import PlusIcon from "../assets/images/icon-plus.svg";
 import DeleteIcon from "../assets/images/icon-delete.svg";
 import EditIcon from "../assets/images/icon-edit.svg";
 import ReplyReplies from "./ReplyReplies";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Data } from "../App";
 
 export interface Replying {
@@ -20,6 +20,7 @@ export interface Replying {
 }
 
 const Reply = ({
+	id,
 	parentId,
 	content,
 	createdAt,
@@ -30,6 +31,34 @@ const Reply = ({
 	currentUser,
 }: Replying) => {
 	const [openReply, setOpenReply] = useState(false);
+	const [deleteModal, setDeleteModal] = useState(false);
+	const ref = useRef(null);
+
+	const deleteComment = (id) => {
+		setMessagesData((prevState) => {
+			console.log(prevState);
+			return {
+				...prevState,
+				comments: prevState.comments.map((comments) => {
+					return {
+						...comments,
+						replies: comments.replies.filter((reply) => reply.id !== id),
+					};
+				}),
+			};
+		});
+	};
+
+	const editComment = () => {
+		if (ref.current) {
+			ref.current.setAttribute("contenteditable", "true");
+			ref.current.focus();
+		}
+	};
+
+	const stopEdit = () => {
+		ref.current.setAttribute("contenteditable", "false");
+	};
 
 	return (
 		<div>
@@ -42,21 +71,23 @@ const Reply = ({
 						<div className="flex gap-4 ml-auto absolute bottom-8 right-4 md:static">
 							<button
 								className="text-SoftRed font-bold text-xl flex items-center gap-2 "
-								onClick={() => setOpenReply((prev) => !prev)}>
+								onClick={() => setDeleteModal(true)}>
 								<img src={DeleteIcon} alt="" />
 								Delete
 							</button>
 							<button
 								className="text-ModerateBlue font-bold text-xl flex items-center gap-2 ml-auto"
-								onClick={() => setOpenReply((prev) => !prev)}>
+								onClick={editComment}>
 								<img src={EditIcon} alt="" />
 								Edit
 							</button>
 						</div>
 					)}
 				</div>
-				<p className="text-GrayishBlue py-2">
-					<span className="text-ModerateBlue font-bold cursor-pointer">@{replyingTo} </span>
+				<p className="text-GrayishBlue py-2 caret-SoftRed" ref={ref} onBlur={stopEdit}>
+					<span className="text-ModerateBlue font-bold cursor-pointer" contentEditable={false}>
+						@{replyingTo}{" "}
+					</span>
 					{content}
 				</p>
 				<div className="flex justify-between items-center py-4">
@@ -87,6 +118,29 @@ const Reply = ({
 						username={user.username}
 						parentId={parentId}
 					/>
+				</div>
+			)}
+			{deleteModal && (
+				<div className="bg-black fixed inset-0 flex justify-center items-center p-4 bg-opacity-30">
+					<div className="bg-white rounded-xl p-6 max-w-sm ">
+						<h1 className="font-bold text-DarkBlue text-lg">Delete comment</h1>
+						<p className="py-4 text-GrayishBlue">
+							Are you sure you want to delete this comment? This will remove the comment and can't
+							be undone
+						</p>
+						<div className="flex w-full justify-between">
+							<button
+								onClick={() => setDeleteModal(false)}
+								className="uppercase text-white p-2 w-full rounded-md bg-GrayishBlue ">
+								No, Cancel
+							</button>
+							<button
+								onClick={() => deleteComment(id)}
+								className="uppercase text-white p-2 w-full bg-SoftRed rounded-md ml-2">
+								Yes, Delete
+							</button>
+						</div>
+					</div>
 				</div>
 			)}
 		</div>
