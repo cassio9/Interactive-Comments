@@ -1,6 +1,6 @@
 import "./App.css";
 import axios from "axios";
-import Messages from "./Components/Messages";
+import Posts from "./Components/Posts";
 import { useEffect, useState } from "react";
 import AddPost from "./Components/AddPost";
 
@@ -38,11 +38,17 @@ function App() {
 		Fetch();
 	}, []);
 
-	const messHTML =
-		messagesData.comments &&
-		messagesData.comments.map((messages: Comments) => {
-			return <Messages key={messages.id} {...messages} setMessagesData={setMessagesData} />;
-		});
+	const messHTML = messagesData.comments.map((messages: Comments) => {
+		return (
+			<Posts
+				key={messages.id}
+				{...messages}
+				setMessagesData={setMessagesData}
+				parentId={messages.id}
+				currentUser={messagesData.currentUser.username}
+			/>
+		);
+	});
 
 	return (
 		<main className="bg-LightGray min-h-screen max-h-fit p-4">

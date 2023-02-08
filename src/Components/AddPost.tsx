@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Comments, Data } from "../App";
+import { Data } from "../App";
 import UserAvatar from "../assets/images/avatars/image-juliusomo.webp";
 
 interface Props {
-	setMessagesData: React.Dispatch<any>;
+	setMessagesData: React.Dispatch<React.SetStateAction<Data>>;
 }
 
 const AddPost = ({ setMessagesData }: Props) => {

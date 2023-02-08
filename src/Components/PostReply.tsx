@@ -3,51 +3,58 @@ import { Data } from "../App";
 import UserAvatar from "../assets/images/avatars/image-juliusomo.webp";
 
 interface Props {
-	setMessagesData: React.Dispatch<any>;
+	setMessagesData: React.Dispatch<React.SetStateAction<Data>>;
 	id: number;
 	setOpenReply: React.Dispatch<boolean>;
+	currentUser: string;
 }
 
-const SendMessages = ({ setMessagesData, id, setOpenReply }: Props) => {
+const PostReply = ({ setMessagesData, id, setOpenReply, currentUser }: Props) => {
 	const [newPost, setNewPost] = useState("");
+
 	const today = new Date();
 	const newId = today.getTime();
-	const hours = today.toLocaleString("en-US", { hour: "numeric", minute: "numeric", hour12: true });
+	const hours = today.toLocaleString("en-US", {
+		hour: "numeric",
+		minute: "numeric",
+		hour12: true,
+	});
 
 	const sendReply = (id: number) => {
-		setMessagesData((prevState: Data) => {
-			return {
-				...prevState,
-				comments: prevState.comments.map((prev) => {
-					return prev.id === id
-						? {
-								...prev,
-								replies: [
-									...prev.replies,
-									{
-										content: newPost,
-										id: newId,
-										createdAt: hours,
-										replyingTo: prev.user.username,
-										score: 0,
-										user: {
-											image: {
-												png: prevState.currentUser.image.png,
-												webp: prevState.currentUser.image.webp,
+		if (newPost) {
+			setMessagesData((prevState: Data) => {
+				return {
+					...prevState,
+					comments: prevState.comments.map((prev) => {
+						return prev.id === id
+							? {
+									...prev,
+									replies: [
+										...prev.replies,
+										{
+											content: newPost,
+											id: newId,
+											createdAt: hours,
+											replyingTo: prev.user.username,
+											score: 0,
+											user: {
+												image: {
+													png: prevState.currentUser.image.png,
+													webp: prevState.currentUser.image.webp,
+												},
+												username: prevState.currentUser.username,
 											},
-											username: prevState.currentUser.username,
 										},
-									},
-								],
-						  }
-						: prev;
-				}),
-			};
-		});
+									],
+							  }
+							: prev;
+					}),
+				};
+			});
+		}
 		setOpenReply(false);
 	};
 
-	console.log(newPost);
 	return (
 		<div className="bg-white mt-4 rounded-lg">
 			<textarea
@@ -70,4 +77,4 @@ const SendMessages = ({ setMessagesData, id, setOpenReply }: Props) => {
 	);
 };
 
-export default SendMessages;
+export default PostReply;

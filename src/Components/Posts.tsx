@@ -2,15 +2,27 @@ import ReplyIcon from "../assets/images/icon-reply.svg";
 import Minus from "../assets/images/icon-minus.svg";
 import Plus from "../assets/images/icon-plus.svg";
 import Reply, { Replying } from "./Reply";
-import SendMessages from "./SendMessages";
+import PostReply from "./PostReply";
 import { useState } from "react";
-import { Comments } from "../App";
+import { Comments, Data } from "../App";
 
 interface Props extends Comments {
-	setMessagesData: React.Dispatch<any>;
+	setMessagesData: React.Dispatch<React.SetStateAction<Data>>;
+	parentId: number;
+	currentUser: string;
 }
 
-const Messages = ({ content, id, createdAt, replies, score, user, setMessagesData }: Props) => {
+const Posts = ({
+	content,
+	id,
+	parentId,
+	createdAt,
+	replies,
+	score,
+	currentUser,
+	user,
+	setMessagesData,
+}: Props) => {
 	const [openReply, setOpenReply] = useState(false);
 
 	return (
@@ -43,16 +55,29 @@ const Messages = ({ content, id, createdAt, replies, score, user, setMessagesDat
 			<div className="pl-5 ml-auto border-l-LightGrayishBlue border-y-0 border-[1px]">
 				{openReply && (
 					<div className="mb-4">
-						<SendMessages setMessagesData={setMessagesData} id={id} setOpenReply={setOpenReply} />
+						<PostReply
+							setMessagesData={setMessagesData}
+							id={id}
+							setOpenReply={setOpenReply}
+							currentUser={currentUser}
+						/>
 					</div>
 				)}
 				{replies &&
 					replies.map((reply: Replying) => {
-						return <Reply key={reply.id} {...reply} />;
+						return (
+							<Reply
+								key={reply.id}
+								{...reply}
+								setMessagesData={setMessagesData}
+								parentId={parentId}
+								currentUser={currentUser}
+							/>
+						);
 					})}
 			</div>
 		</div>
 	);
 };
 
-export default Messages;
+export default Posts;
