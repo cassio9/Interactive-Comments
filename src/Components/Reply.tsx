@@ -19,6 +19,15 @@ export interface Replying {
 	user: { image: { png: string; webp: string }; username: string };
 }
 
+interface ReplyInterface {
+	id: number;
+	content: string;
+	createdAt: string;
+	replyingTo: string;
+	score: number;
+	user: { image: { png: string; webp: string }; username: string };
+}
+
 const Reply = ({
 	id,
 	parentId,
@@ -32,9 +41,9 @@ const Reply = ({
 }: Replying) => {
 	const [openReply, setOpenReply] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
-	const ref = useRef(null);
+	const ref = useRef<HTMLInputElement>(null);
 
-	const deleteComment = (id) => {
+	const deleteComment = (id: number) => {
 		setMessagesData((prevState) => {
 			console.log(prevState);
 			return {
@@ -42,7 +51,7 @@ const Reply = ({
 				comments: prevState.comments.map((comments) => {
 					return {
 						...comments,
-						replies: comments.replies.filter((reply) => reply.id !== id),
+						replies: comments.replies.filter((reply: ReplyInterface) => reply.id !== id),
 					};
 				}),
 			};
@@ -56,8 +65,37 @@ const Reply = ({
 		}
 	};
 
-	const stopEdit = () => {
-		ref.current.setAttribute("contenteditable", "false");
+	const changeReply = (id: number, e: React.FormEvent<HTMLParagraphElement>) => {
+		if (ref.current) {
+			ref.current.setAttribute("contenteditable", "false");
+			const input = e.target as HTMLElement;
+			setMessagesData((prevState) => {
+				return {
+					...prevState,
+					comments: prevState.comments.map((comments) => {
+						return {
+							...comments,
+							replies: comments.replies.map((reply: ReplyInterface) => {
+								return reply.id == id
+									? {
+											...reply,
+											content: input.innerText,
+									  }
+									: reply;
+							}),
+						};
+					}),
+				};
+			});
+		}
+	};
+
+	const BlurOnEnterKey = (e: React.KeyboardEvent<HTMLParagraphElement>) => {
+		if (e.key === "Enter") {
+			if (ref.current) {
+				ref.current.blur();
+			}
+		}
 	};
 
 	return (
@@ -84,12 +122,18 @@ const Reply = ({
 						</div>
 					)}
 				</div>
-				<p className="text-GrayishBlue py-2 caret-SoftRed" ref={ref} onBlur={stopEdit}>
+				<div className="pt-2">
 					<span className="text-ModerateBlue font-bold cursor-pointer" contentEditable={false}>
 						@{replyingTo}{" "}
 					</span>
-					{content}
-				</p>
+					<p
+						className="text-GrayishBlue py-2 caret-SoftRed inline focus:outline-SoftRed focus:outline-dashed focus:outline-offset-2"
+						ref={ref}
+						onBlur={(e) => changeReply(id, e)}
+						onKeyDown={(e) => BlurOnEnterKey(e)}>
+						{content}
+					</p>
+				</div>
 				<div className="flex justify-between items-center py-4">
 					<div className="flex gap-4 bg-LightGray py-2  px-4 rounded-lg ">
 						<button className="text-xl text-LightGrayishBlue">

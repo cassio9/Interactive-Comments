@@ -50,6 +50,8 @@ function App() {
 		);
 	});
 
+	console.log(messagesData);
+
 	return (
 		<main className="bg-LightGray min-h-screen max-h-fit p-4">
 			{messHTML}
