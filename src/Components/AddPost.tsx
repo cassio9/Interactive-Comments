@@ -9,29 +9,39 @@ interface Props {
 const AddPost = ({ setMessagesData }: Props) => {
 	const [newPost, setNewPost] = useState("");
 
+	const today = new Date();
+	const newId = today.getTime();
+	const hours = today.toLocaleString("en-US", {
+		hour: "numeric",
+		minute: "numeric",
+		hour12: true,
+	});
+
 	const sendData = () => {
-		setMessagesData((prevState: Data) => {
-			return {
-				...prevState,
-				comments: [
-					...prevState.comments,
-					{
-						content: newPost,
-						id: prevState.comments.length + 1,
-						createdAt: "now",
-						replies: [],
-						score: 0,
-						user: {
-							image: {
-								png: prevState.currentUser.image.png,
-								webp: prevState.currentUser.image.webp,
+		if (newPost) {
+			setMessagesData((prevState: Data) => {
+				return {
+					...prevState,
+					comments: [
+						...prevState.comments,
+						{
+							content: newPost,
+							id: newId,
+							createdAt: hours,
+							replies: [],
+							score: 0,
+							user: {
+								image: {
+									png: prevState.currentUser.image.png,
+									webp: prevState.currentUser.image.webp,
+								},
+								username: prevState.currentUser.username,
 							},
-							username: prevState.currentUser.username,
 						},
-					},
-				],
-			};
-		});
+					],
+				};
+			});
+		}
 		setNewPost("");
 	};
 

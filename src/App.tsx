@@ -50,12 +50,12 @@ function App() {
 		);
 	});
 
-	console.log(messagesData);
-
 	return (
 		<main className="bg-LightGray min-h-screen max-h-fit p-4">
-			{messHTML}
-			<AddPost setMessagesData={setMessagesData} />
+			<div className="md:max-w-2xl mx-auto">
+				{messHTML}
+				<AddPost setMessagesData={setMessagesData} />
+			</div>
 		</main>
 	);
 }
