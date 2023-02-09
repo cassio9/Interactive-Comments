@@ -1,6 +1,4 @@
 import ReplyIcon from "../assets/images/icon-reply.svg";
-import Minus from "../assets/images/icon-minus.svg";
-import Plus from "../assets/images/icon-plus.svg";
 import DeleteIcon from "../assets/images/icon-delete.svg";
 import EditIcon from "../assets/images/icon-edit.svg";
 import Reply from "./Reply";
@@ -10,6 +8,7 @@ import { Comments, Data } from "../App";
 import DeleteModal from "./DeleteModal";
 import { Replying } from "./interface/interfaces";
 import { BlurOnEnterKey, editComment } from "./utils/utils";
+import Score from "./Score";
 
 interface Props extends Comments {
 	setMessagesData: React.Dispatch<React.SetStateAction<Data>>;
@@ -103,15 +102,7 @@ const Posts = ({
 					</p>
 				</div>
 				<div className="flex justify-between items-center py-4 md:py-0 md:order-0">
-					<div className="flex gap-4 bg-LightGray py-2  px-4 md:w-[2.5rem] md:py-4  rounded-lg md:flex-col items-center justify-center">
-						<button className="text-xl text-LightGrayishBlue">
-							<img src={Plus} alt="Plus Icon" />
-						</button>
-						<p className="font-bold text-ModerateBlue text-xl">{score}</p>
-						<button className="text-xl text-LightGrayishBlue">
-							<img src={Minus} alt="Minus Icon" />
-						</button>
-					</div>
+					<Score score={score} setMessagesData={setMessagesData} id={id} from={"Posts"} />
 					{user.username !== currentUser && (
 						<button
 							className="text-ModerateBlue font-bold text-xl flex items-center gap-2 md:absolute top-4 right-4"

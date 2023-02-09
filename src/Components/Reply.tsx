@@ -1,6 +1,4 @@
 import ReplyIcon from "../assets/images/icon-reply.svg";
-import MinusIcon from "../assets/images/icon-minus.svg";
-import PlusIcon from "../assets/images/icon-plus.svg";
 import DeleteIcon from "../assets/images/icon-delete.svg";
 import EditIcon from "../assets/images/icon-edit.svg";
 import ReplyReplies from "./ReplyReplies";
@@ -8,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import DeleteModal from "./DeleteModal";
 import { Replying, ReplyInterface } from "./interface/interfaces";
 import { BlurOnEnterKey, editComment } from "./utils/utils";
+import Score from "./Score";
 
 const Reply = ({
 	id,
@@ -99,15 +98,7 @@ const Reply = ({
 					</div>
 				</div>
 				<div className="flex justify-between items-center py-4 md:py-0 md:order-0">
-					<div className="flex gap-4 bg-LightGray py-2  px-4 md:w-[2.5rem] md:py-4  rounded-lg md:flex-col items-center justify-center">
-						<button className="text-xl text-LightGrayishBlue">
-							<img src={PlusIcon} alt="Plus Icon" />
-						</button>
-						<p className="font-bold text-ModerateBlue text-xl">{score}</p>
-						<button className="text-xl text-LightGrayishBlue">
-							<img src={MinusIcon} alt="Minus Icon" />
-						</button>
-					</div>
+					<Score score={score} setMessagesData={setMessagesData} id={id} from={"Reply"} />
 					{user.username !== currentUser && (
 						<button
 							className="text-ModerateBlue font-bold text-xl flex items-center gap-2 md:absolute top-4 right-4"
