@@ -1,6 +1,5 @@
 import React from "react";
-import { Data } from "../App";
-import { ReplyInterface } from "./interface/interfaces";
+import { Data, ReplyInterface } from "./interface/interfaces";
 
 interface Props {
 	setMessagesData: React.Dispatch<React.SetStateAction<Data>>;
@@ -55,7 +54,7 @@ const DeleteModal = ({ setMessagesData, setDeleteModal, id, from }: Props) => {
 					</button>
 					<button
 						onClick={() => {
-							from === "post" ? deletePostComment(id) : deleteReplyComment(id);
+							from === "Post" ? deletePostComment(id) : deleteReplyComment(id);
 						}}
 						className="uppercase text-white p-2 w-full bg-SoftRed rounded-md ml-2">
 						Yes, Delete

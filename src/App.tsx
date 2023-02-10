@@ -1,22 +1,10 @@
 import "./App.css";
 import axios from "axios";
 import Posts from "./Components/Posts";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import AddPost from "./Components/AddPost";
-
-export interface Comments {
-	content: string;
-	id: number;
-	createdAt: string;
-	replies: any;
-	score: number;
-	user: { image: { png: string; webp: string }; username: string };
-}
-
-export interface Data {
-	currentUser: { image: { png: string; webp: string }; username: string };
-	comments: Comments[];
-}
+import { Comments, Data } from "./Components/interface/interfaces";
+import { compare } from "./Components/utils/utils";
 
 function App() {
 	const [messagesData, setMessagesData] = useState<Data>({
@@ -38,17 +26,19 @@ function App() {
 		Fetch();
 	}, []);
 
-	const messHTML = messagesData.comments.map((messages: Comments) => {
-		return (
-			<Posts
-				key={messages.id}
-				{...messages}
-				setMessagesData={setMessagesData}
-				parentId={messages.id}
-				currentUser={messagesData.currentUser.username}
-			/>
-		);
-	});
+	const messHTML = messagesData.comments
+		.map((messages: Comments) => {
+			return (
+				<Posts
+					key={messages.id}
+					{...messages}
+					setMessagesData={setMessagesData}
+					parentId={messages.id}
+					currentUser={messagesData.currentUser.username}
+				/>
+			);
+		})
+		.sort(compare);
 
 	return (
 		<main className="bg-LightGray min-h-screen max-h-fit p-4">

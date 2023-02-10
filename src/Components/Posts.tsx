@@ -4,10 +4,9 @@ import EditIcon from "../assets/images/icon-edit.svg";
 import Reply from "./Reply";
 import PostReply from "./PostReply";
 import { useEffect, useRef, useState } from "react";
-import { Comments, Data } from "../App";
 import DeleteModal from "./DeleteModal";
-import { Replying } from "./interface/interfaces";
-import { BlurOnEnterKey, editComment } from "./utils/utils";
+import { ReplyingInterface, Comments, Data } from "./interface/interfaces";
+import { BlurOnEnterKey, compare, editComment } from "./utils/utils";
 import Score from "./Score";
 
 interface Props extends Comments {
@@ -116,12 +115,7 @@ const Posts = ({
 			<div className="pl-5 border-l-LightGrayishBlue border-l-[1px] md:ml-5 md:pl-10">
 				{openReply && (
 					<div className="mb-4">
-						<PostReply
-							setMessagesData={setMessagesData}
-							id={id}
-							setOpenReply={setOpenReply}
-							currentUser={currentUser}
-						/>
+						<PostReply setMessagesData={setMessagesData} id={id} setOpenReply={setOpenReply} />
 					</div>
 				)}
 				{deleteModal && (
@@ -129,21 +123,23 @@ const Posts = ({
 						setDeleteModal={setDeleteModal}
 						setMessagesData={setMessagesData}
 						id={id}
-						from={"post"}
+						from={"Post"}
 					/>
 				)}
 				{replies &&
-					replies.map((reply: Replying) => {
-						return (
-							<Reply
-								key={reply.id}
-								{...reply}
-								setMessagesData={setMessagesData}
-								parentId={parentId}
-								currentUser={currentUser}
-							/>
-						);
-					})}
+					replies
+						.map((reply: ReplyingInterface) => {
+							return (
+								<Reply
+									key={reply.id}
+									{...reply}
+									setMessagesData={setMessagesData}
+									parentId={parentId}
+									currentUser={currentUser}
+								/>
+							);
+						})
+						.sort(compare)}
 			</div>
 		</div>
 	);

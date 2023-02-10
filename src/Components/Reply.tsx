@@ -4,7 +4,7 @@ import EditIcon from "../assets/images/icon-edit.svg";
 import ReplyReplies from "./ReplyReplies";
 import { useEffect, useRef, useState } from "react";
 import DeleteModal from "./DeleteModal";
-import { Replying, ReplyInterface } from "./interface/interfaces";
+import { ReplyingInterface, ReplyInterface } from "./interface/interfaces";
 import { BlurOnEnterKey, editComment } from "./utils/utils";
 import Score from "./Score";
 
@@ -18,7 +18,7 @@ const Reply = ({
 	setMessagesData,
 	user,
 	currentUser,
-}: Replying) => {
+}: ReplyingInterface) => {
 	const [openReply, setOpenReply] = useState(false);
 	const ref = useRef<HTMLInputElement>(null);
 	const [deleteModal, setDeleteModal] = useState(false);

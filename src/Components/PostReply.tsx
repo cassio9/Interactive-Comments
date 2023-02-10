@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { Data } from "../App";
 import UserAvatar from "../assets/images/avatars/image-juliusomo.webp";
+import { Data } from "./interface/interfaces";
 
 interface Props {
 	setMessagesData: React.Dispatch<React.SetStateAction<Data>>;
 	id: number;
 	setOpenReply: React.Dispatch<boolean>;
-	currentUser: string;
 }
 
-const PostReply = ({ setMessagesData, id, setOpenReply, currentUser }: Props) => {
+const PostReply = ({ setMessagesData, id, setOpenReply }: Props) => {
 	const [newPost, setNewPost] = useState("");
 
 	const today = new Date();
