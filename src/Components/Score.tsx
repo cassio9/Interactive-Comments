@@ -1,7 +1,6 @@
-import { Data } from "../App";
 import Minus from "../assets/images/icon-minus.svg";
 import Plus from "../assets/images/icon-plus.svg";
-import { Replying } from "./interface/interfaces";
+import { Data, ReplyingInterface } from "./interface/interfaces";
 
 interface Props {
 	score: number;
@@ -12,7 +11,7 @@ interface Props {
 
 const Score = ({ score, setMessagesData, id, from }: Props) => {
 	const changeScorePost = (id: number, operator: string) => {
-		setMessagesData((prevState) => {
+		setMessagesData((prevState: Data) => {
 			return {
 				...prevState,
 				comments: prevState.comments.map((comment) => {
@@ -39,7 +38,7 @@ const Score = ({ score, setMessagesData, id, from }: Props) => {
 				comments: prevState.comments.map((comment) => {
 					return {
 						...comment,
-						replies: comment.replies.map((reply: Replying) => {
+						replies: comment.replies.map((reply: ReplyingInterface) => {
 							return reply.id === id
 								? {
 										...reply,

@@ -1,7 +1,7 @@
 import "./App.css";
 import axios from "axios";
 import Posts from "./Components/Posts";
-import { ReactElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AddPost from "./Components/AddPost";
 import { Comments, Data } from "./Components/interface/interfaces";
 import { compare } from "./Components/utils/utils";
