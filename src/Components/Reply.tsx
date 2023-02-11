@@ -2,10 +2,9 @@ import ReplyIcon from "../assets/images/icon-reply.svg";
 import DeleteIcon from "../assets/images/icon-delete.svg";
 import EditIcon from "../assets/images/icon-edit.svg";
 import ReplyReplies from "./ReplyReplies";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import DeleteModal from "./DeleteModal";
-import { ReplyingInterface, ReplyInterface } from "./interface/interfaces";
-import { BlurOnEnterKey, editComment } from "./utils/utils";
+import { ReplyingInterface } from "./interface/interfaces";
 import Score from "./Score";
 import Edit from "./Edit";
 

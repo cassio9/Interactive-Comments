@@ -3,10 +3,10 @@ import DeleteIcon from "../assets/images/icon-delete.svg";
 import EditIcon from "../assets/images/icon-edit.svg";
 import Reply from "./Reply";
 import PostReply from "./PostReply";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import DeleteModal from "./DeleteModal";
 import { ReplyingInterface, Comments, Data } from "./interface/interfaces";
-import { BlurOnEnterKey, compare, editComment } from "./utils/utils";
+import { compare } from "./utils/utils";
 import Score from "./Score";
 import Edit from "./Edit";
 
@@ -30,13 +30,6 @@ const Posts = ({
 	const [openReply, setOpenReply] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [openEdit, setOpenEdit] = useState(false);
-
-	const today = new Date();
-	const hours = today.toLocaleString("en-US", {
-		hour: "numeric",
-		minute: "numeric",
-		hour12: true,
-	});
 
 	useEffect(() => {
 		deleteModal
