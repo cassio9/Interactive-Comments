@@ -36,7 +36,7 @@ const Reply = ({
 				<div className="md:order-2 md:pb-2 md:w-full">
 					<div className="flex items-center gap-4 ">
 						<img src={user.image.webp} className="w-8" alt="avatar" />
-						<p className="text-DarkBlue font-bold">{user.username}</p>
+						<h1 className="text-DarkBlue font-bold">{user.username}</h1>
 						{user.username === currentUser && (
 							<span className="text-white bg-ModerateBlue text-sm  px-2 rounded-sm">you</span>
 						)}

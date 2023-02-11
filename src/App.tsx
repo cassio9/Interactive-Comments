@@ -14,7 +14,7 @@ function App() {
 		typeof value === "string" ? JSON.parse(value) : InitialData
 	);
 
-	const messHTML = messagesData.comments
+	const messageHTML = messagesData.comments
 		.map((messages: Comments) => {
 			return (
 				<Posts
@@ -31,7 +31,7 @@ function App() {
 	return (
 		<main className="bg-LightGray min-h-screen max-h-fit p-4">
 			<div className="md:max-w-2xl mx-auto">
-				{messHTML}
+				{messageHTML}
 				<AddPost messagesData={messagesData} setMessagesData={setMessagesData} />
 			</div>
 		</main>
