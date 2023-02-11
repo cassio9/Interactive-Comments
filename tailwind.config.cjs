@@ -14,7 +14,7 @@ module.exports = {
 				VeryLightGray: "hsl(228, 33%, 97%)",
 			},
 			fontFamily: {
-				Rubik: ["Rubik", "sans-serif"],
+				Rubik: ["Rubik, sans-serif"],
 			},
 		},
 	},

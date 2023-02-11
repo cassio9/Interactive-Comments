@@ -5,26 +5,14 @@ import { useEffect, useState } from "react";
 import AddPost from "./Components/AddPost";
 import { Comments, Data } from "./Components/interface/interfaces";
 import { compare } from "./Components/utils/utils";
+import { InitialData } from "../data";
 
 function App() {
-	const [messagesData, setMessagesData] = useState<Data>({
-		currentUser: { image: { png: "", webp: "" }, username: "" },
-		comments: [],
-	});
+	const value = localStorage.getItem("interactive");
 
-	const Fetch = async () => {
-		try {
-			const response = await axios.get("data.json");
-			console.log(response.data);
-			setMessagesData(response.data);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	useEffect(() => {
-		Fetch();
-	}, []);
+	const [messagesData, setMessagesData] = useState<Data>(
+		typeof value === "string" ? JSON.parse(value) : InitialData
+	);
 
 	const messHTML = messagesData.comments
 		.map((messages: Comments) => {
@@ -44,7 +32,7 @@ function App() {
 		<main className="bg-LightGray min-h-screen max-h-fit p-4">
 			<div className="md:max-w-2xl mx-auto">
 				{messHTML}
-				<AddPost setMessagesData={setMessagesData} />
+				<AddPost messagesData={messagesData} setMessagesData={setMessagesData} />
 			</div>
 		</main>
 	);

@@ -78,13 +78,13 @@ const Posts = ({
 						{user.username === currentUser && (
 							<div className="flex gap-4 ml-auto absolute bottom-8 right-4 md:static md:ml-auto">
 								<button
-									className="text-SoftRed font-bold text-xl flex items-center gap-2 "
+									className="text-SoftRed font-bold text-xl flex items-center gap-2 hover:opacity-70"
 									onClick={() => setDeleteModal(true)}>
 									<img src={DeleteIcon} alt="" />
 									Delete
 								</button>
 								<button
-									className="text-ModerateBlue font-bold text-xl flex items-center gap-2 ml-auto"
+									className="text-ModerateBlue font-bold text-xl flex items-center gap-2 ml-auto hover:opacity-70"
 									onClick={() => editComment(ref)}>
 									<img src={EditIcon} alt="" />
 									Edit
@@ -104,7 +104,7 @@ const Posts = ({
 					<Score score={score} setMessagesData={setMessagesData} id={id} from={"Posts"} />
 					{user.username !== currentUser && (
 						<button
-							className="text-ModerateBlue font-bold text-xl flex items-center gap-2 md:absolute top-4 right-4"
+							className="text-ModerateBlue font-bold text-xl flex items-center gap-2 md:absolute top-4 right-4 hover:opacity-70"
 							onClick={() => setOpenReply((prev) => !prev)}>
 							<img src={ReplyIcon} alt="" />
 							Reply
