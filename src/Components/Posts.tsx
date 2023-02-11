@@ -8,6 +8,7 @@ import DeleteModal from "./DeleteModal";
 import { ReplyingInterface, Comments, Data } from "./interface/interfaces";
 import { BlurOnEnterKey, compare, editComment } from "./utils/utils";
 import Score from "./Score";
+import Edit from "./Edit";
 
 interface Props extends Comments {
 	setMessagesData: React.Dispatch<React.SetStateAction<Data>>;
@@ -28,7 +29,7 @@ const Posts = ({
 }: Props) => {
 	const [openReply, setOpenReply] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
-	const ref = useRef<HTMLInputElement>(null);
+	const [openEdit, setOpenEdit] = useState(false);
 
 	const today = new Date();
 	const hours = today.toLocaleString("en-US", {
@@ -42,27 +43,6 @@ const Posts = ({
 			? (document.body.style.overflow = "hidden")
 			: (document.body.style.overflow = "auto");
 	}, [deleteModal]);
-
-	const changePost = (id: number, e: React.FormEvent<HTMLParagraphElement>) => {
-		if (ref.current) {
-			ref.current.setAttribute("contenteditable", "false");
-			const input = e.target as HTMLElement;
-			setMessagesData((prevState) => {
-				return {
-					...prevState,
-					comments: prevState.comments.map((comments) => {
-						return comments.id == id
-							? {
-									...comments,
-									createdAt: hours,
-									content: input.innerText,
-							  }
-							: comments;
-					}),
-				};
-			});
-		}
-	};
 
 	return (
 		<div>
@@ -85,20 +65,14 @@ const Posts = ({
 								</button>
 								<button
 									className="text-ModerateBlue font-bold text-xl flex items-center gap-2 ml-auto hover:opacity-70"
-									onClick={() => editComment(ref)}>
+									onClick={() => setOpenEdit((prev) => !prev)}>
 									<img src={EditIcon} alt="" />
 									Edit
 								</button>
 							</div>
 						)}
 					</div>
-					<p
-						className="text-GrayishBlue py-2"
-						ref={ref}
-						onBlur={(e) => changePost(id, e)}
-						onKeyDown={(e) => BlurOnEnterKey(e, ref)}>
-						{content}
-					</p>
+					<p className="text-GrayishBlue py-2">{content}</p>
 				</div>
 				<div className="flex justify-between items-center py-4 md:py-0 md:order-0">
 					<Score score={score} setMessagesData={setMessagesData} id={id} from={"Posts"} />
@@ -116,6 +90,17 @@ const Posts = ({
 				{openReply && (
 					<div className="mb-4">
 						<PostReply setMessagesData={setMessagesData} id={id} setOpenReply={setOpenReply} />
+					</div>
+				)}
+				{openEdit && (
+					<div className="my-4">
+						<Edit
+							content={content}
+							setOpenEdit={setOpenEdit}
+							setMessagesData={setMessagesData}
+							id={id}
+							from={"Post"}
+						/>
 					</div>
 				)}
 				{deleteModal && (

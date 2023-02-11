@@ -4,17 +4,16 @@ import { Data, ReplyInterface } from "./interface/interfaces";
 
 interface Props {
 	setMessagesData: React.Dispatch<React.SetStateAction<Data>>;
-	username: string;
 	id: number;
 	setOpenEdit: React.Dispatch<boolean>;
 	content: string;
+	from: string;
 }
 
-const Edit = ({ setMessagesData, username, id, setOpenEdit, content }: Props) => {
+const Edit = ({ setMessagesData, id, setOpenEdit, content, from }: Props) => {
 	const [newPost, setNewPost] = useState("");
 
 	const today = new Date();
-	const newId = today.getTime();
 	const hours = today.toLocaleString("en-US", {
 		hour: "numeric",
 		minute: "numeric",
@@ -22,25 +21,47 @@ const Edit = ({ setMessagesData, username, id, setOpenEdit, content }: Props) =>
 	});
 
 	const EditReply = (id: number) => {
-		setMessagesData((prevState) => {
-			return {
-				...prevState,
-				comments: prevState.comments.map((comments) => {
-					return {
-						...comments,
-						replies: comments.replies.map((reply: ReplyInterface) => {
-							return reply.id == id
-								? {
-										...reply,
-										content: newPost,
-										createdAt: reply.createdAt + " edited ",
-								  }
-								: reply;
-						}),
-					};
-				}),
-			};
-		});
+		if (newPost) {
+			setMessagesData((prevState) => {
+				return {
+					...prevState,
+					comments: prevState.comments.map((comments) => {
+						return {
+							...comments,
+							replies: comments.replies.map((reply: ReplyInterface) => {
+								return reply.id == id
+									? {
+											...reply,
+											content: newPost,
+											createdAt: hours + " edited ",
+									  }
+									: reply;
+							}),
+						};
+					}),
+				};
+			});
+		}
+		setOpenEdit(false);
+	};
+
+	const EditPost = (id: number) => {
+		if (newPost) {
+			setMessagesData((prevState) => {
+				return {
+					...prevState,
+					comments: prevState.comments.map((comments) => {
+						return comments.id == id
+							? {
+									...comments,
+									createdAt: hours + " edited ",
+									content: newPost,
+							  }
+							: comments;
+					}),
+				};
+			});
+		}
 		setOpenEdit(false);
 	};
 
@@ -57,7 +78,7 @@ const Edit = ({ setMessagesData, username, id, setOpenEdit, content }: Props) =>
 				<img src={UserAvatar} className="w-12" alt="avatar" />
 				<button
 					className="bg-ModerateBlue py-3 px-8 text-xl text-white rounded-lg hover:opacity-70"
-					onClick={() => EditReply(id)}>
+					onClick={() => (from == "Post" ? EditPost(id) : EditReply(id))}>
 					Update
 				</button>
 			</div>

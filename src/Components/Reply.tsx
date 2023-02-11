@@ -21,7 +21,6 @@ const Reply = ({
 	currentUser,
 }: ReplyingInterface) => {
 	const [openReply, setOpenReply] = useState(false);
-	const ref = useRef<HTMLInputElement>(null);
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [openEdit, setOpenEdit] = useState(false);
 
@@ -31,32 +30,6 @@ const Reply = ({
 			? (document.body.style.overflow = "hidden")
 			: (document.body.style.overflow = "auto");
 	}, [deleteModal]);
-
-	// update data after text gets blur
-	const changeReply = (id: number, e: React.FormEvent<HTMLParagraphElement>) => {
-		if (ref.current) {
-			ref.current.setAttribute("contenteditable", "false");
-			const input = e.target as HTMLElement;
-			setMessagesData((prevState) => {
-				return {
-					...prevState,
-					comments: prevState.comments.map((comments) => {
-						return {
-							...comments,
-							replies: comments.replies.map((reply: ReplyInterface) => {
-								return reply.id == id
-									? {
-											...reply,
-											content: input.innerText,
-									  }
-									: reply;
-							}),
-						};
-					}),
-				};
-			});
-		}
-	};
 
 	return (
 		<div>
@@ -90,13 +63,7 @@ const Reply = ({
 						<span className="text-ModerateBlue font-bold cursor-pointer" contentEditable={false}>
 							@{replyingTo}{" "}
 						</span>
-						<p
-							className="text-GrayishBlue py-2 caret-SoftRed inline focus:outline-SoftRed focus:outline-dashed focus:outline-offset-2"
-							ref={ref}
-							onBlur={(e) => changeReply(id, e)}
-							onKeyDown={(e) => BlurOnEnterKey(e, ref)}>
-							{content}
-						</p>
+						<p className="text-GrayishBlue py-2">{content}</p>
 					</div>
 				</div>
 				<div className="flex justify-between items-center py-4 md:py-0 md:order-0">
@@ -127,8 +94,8 @@ const Reply = ({
 						content={content}
 						setOpenEdit={setOpenEdit}
 						setMessagesData={setMessagesData}
-						username={user.username}
 						id={id}
+						from={"Reply"}
 					/>
 				</div>
 			)}
@@ -137,7 +104,7 @@ const Reply = ({
 					setDeleteModal={setDeleteModal}
 					setMessagesData={setMessagesData}
 					id={id}
-					from={"reply"}
+					from={"Reply"}
 				/>
 			)}
 		</div>
